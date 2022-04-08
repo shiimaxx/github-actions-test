@@ -1,0 +1,29 @@
+name: test workflow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  first_step:
+    runs-on: ubuntu-latest
+    steps:
+      - name: sleep
+        run: sleep 10
+
+  second_step:
+    runs-on: ubuntu-latest
+    needs: [first_step]
+    strategy:
+      matrix:
+        include:
+          - name: test1.txt
+            option: -n
+          - name: test2.txt
+            option: -n
+    steps:
+      - name: prepare
+        run: echo prepare
+      - name: run
+        run: cat ${{ matrix.option}} ${{ matrix.name}}
